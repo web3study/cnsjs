@@ -9,13 +9,14 @@ This is the rewrite of `ensjs`. If you are looking for the previous version, loo
 ### Setup
 
 ```
-import CNS, { getCnsAddress } from '@ensdomains/ensjs'
+import CNS, { getCnsAddress } from 'cnsjs-space'
 
+let provider = new ethers.providers.JsonRpcProvider('https://evm.confluxrpc.com')
+let networkId = 1030
+const cns = new CNS({networkId, provider, ensAddress: getCnsAddress(networkId)})
+let address = await cns.name('99999.cfx').getAddress()
+console.log(address)
 
-
-const ens = new CNS({ provider, ensAddress: getCnsAddress('1') })
-
-ens.name('resolver.cfx').getAddress() // 0x123
 ```
 
 ### exports
@@ -38,45 +39,45 @@ name(name: String) => Name
 Returns a Name Object, that allows you to make record queries.
 
 ```
-resolver(address: EthereumAddress) => Resolver
+resolver(address: ConfluxAddress) => Resolver
 ```
 
 Returns a Resolver Object, allowing you to query names from this specific resolver. Most useful when querying a different resolver that is different than is currently recorded on the registry. E.g. migrating to a new resolver
 
 ```
-async getName(address: EthereumAddress) => Promise<Name>
+async getName(address: ConfluxAddress) => Promise<Name>
 ```
 
-Returns the reverse record for a particular Ethereum address.
+Returns the reverse record for a particular Conflux address.
 
 ```
 async setReverseRecord(name: Name) => Promise<EthersTxObject>
 ```
 
-Sets the reverse record for the current Ethereum address
+Sets the reverse record for the current Conflux address
 
 ### Name Interface
 
 ```ts
-async getOwner() => Promise<EthereumAddress>
+async getOwner() => Promise<ConfluxAddress>
 ```
 
 Returns the owner/controller for the current CNS name.
 
 ```ts
-async setOwner(address: EthereumAddress) => Promise<Ethers>
+async setOwner(address: ConfluxAddress) => Promise<Ethers>
 ```
 
 Sets the owner/controller for the current CNS name.
 
 ```ts
-async getResolver() => Promise<EthereumAddress>
+async getResolver() => Promise<ConfluxAddress>
 ```
 
 Returns the resolver for the current CNS name.
 
 ```ts
-async setResolver(address: EthereumAddress) => Promise<EthereumAddress>
+async setResolver(address: ConfluxAddress) => Promise<ConfluxAddress>
 ```
 
 Sets the resolver for the current CNS name.
@@ -88,13 +89,13 @@ async getTTL() => Promise<Number>
 Returns the TTL for the current CNS name.
 
 ```ts
-async getAddress(coinId: String) => Promise<EthereumAddress>
+async getAddress(coinId: String) => Promise<ConfluxAddress>
 ```
 
 Returns the address for the current CNS name for the coinId provided.
 
 ```ts
-async setAddress(coinId: String, address: EthereumAddress) => Promise<EthersTxObject>
+async setAddress(coinId: String, address: ConfluxAddress) => Promise<EthersTxObject>
 ```
 
 Sets the address for the current CNS name for the coinId provided.
@@ -124,13 +125,13 @@ async setText(key: String, recordValue: String) => Promise<EthersTxObject>
 Sets the text record for a given key for the current CNS name.
 
 ```ts
-async setSubnodeOwner(label: String, newOwner: EthereumAddress) => Promise<EthersTxObject>
+async setSubnodeOwner(label: String, newOwner: ConfluxAddress) => Promise<EthersTxObject>
 ```
 
 Sets the subnode owner for a subdomain of the current CNS name.
 
 ```ts
-async setSubnodeRecord(label: String, newOwner: EthereumAddress, resolver: EthereumAddress, ttl: ?Number) => Promise<EthersTxObject>
+async setSubnodeRecord(label: String, newOwner: ConfluxAddress, resolver: ConfluxAddress, ttl: ?Number) => Promise<EthersTxObject>
 ```
 
 Sets the subnode owner, resolver, ttl for a subdomain of the current CNS name in one transaction.
@@ -160,7 +161,3 @@ name(name) => Name
 ```
 
 Returns a Name Object that hardcodes the resolver
-
-## NOTE
-
-The previous version of `ensjs` can be found at https://github.com/ensdomains/ensjs/tree/v1
