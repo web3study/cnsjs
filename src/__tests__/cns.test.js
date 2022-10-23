@@ -19,12 +19,14 @@ describe('Blockchain tests', () => {
     describe('Test contract and Web3 setup', () => {
         test('accounts exist', async () => {
             console.log(111)
-            let ensAddress = '0xec3133E740FcAc8AC7212078522E3Ee3FFde0903'
+            // let ensAddress = '0xec3133E740FcAc8AC7212078522E3Ee3FFde0903'
             let provider = new ethers.providers.JsonRpcProvider('https://evm.confluxrpc.com')
             let networkId = 1030
             const cns = new CNS({networkId, provider, ensAddress: getCnsAddress(networkId)})
-            let address = await cns.name('99999.cfx').getAddress()
+            let address = await cns.name('honey.cfx').getAddress()
+            let cfxAddress = await cns.name('honey.cfx').getCfxAddress()
             console.log(address)
+            console.log(cfxAddress)
         })
     })
 })

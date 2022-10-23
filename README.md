@@ -18,7 +18,10 @@ import CNS, { getCnsAddress } from 'cnsjs-space'
 let provider = new ethers.providers.JsonRpcProvider('https://evm.confluxrpc.com')
 let networkId = 1030
 const cns = new CNS({networkId, provider, ensAddress: getCnsAddress(networkId)})
-let address = await cns.name('99999.cfx').getAddress()
+let address = await cns.name('honey.cfx').getAddress()
+let cfxAddress = await cns.name('honey.cfx').getCfxAddress()
+console.log(address)
+console.log(cfxAddress)
 console.log(address)
 
 ```

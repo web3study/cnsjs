@@ -6,6 +6,7 @@ import {abi as reverseRegistrarContract} from '@ensdomains/ens/build/contracts/R
 
 import {emptyAddress, labelhash, namehash} from './utils'
 import {decodeContenthash, encodeContenthash,} from './utils/contents'
+const { format } = require('js-conflux-sdk')
 
 const Provider = ethers.providers.Provider
 
@@ -40,11 +41,15 @@ async function getAddrWithResolver({name, key, resolverAddr, provider}) {
             address: resolverAddr,
             provider,
         })
-        const {coinType, encoder} = formatsByName[key]
-        const addr = await Resolver['addr(bytes32,uint256)'](nh, coinType)
-        if (addr === '0x') return emptyAddress
-
-        return encoder(Buffer.from(addr.slice(2), 'hex'))
+        if (key === "CFX") {
+            const addr = await Resolver['addr(bytes32,uint256)'](nh, 1029)
+            return format.address(addr, 1029)
+        } else {
+            const {coinType, encoder} = formatsByName[key]
+            const addr = await Resolver['addr(bytes32,uint256)'](nh, coinType)
+            if (addr === '0x') return emptyAddress
+            return encoder(Buffer.from(addr.slice(2), 'hex'))
+        }
     } catch (e) {
         console.log(e)
         console.warn(
@@ -180,7 +185,6 @@ async function setTextWithResolver({
 }
 
 class Resolver {
-    //TODO
     constructor({address, ens}) {
         this.address = address
         this.ens = ens
@@ -242,6 +246,21 @@ class Name {
         }
     }
 
+    async getCfxAddress() {
+        const resolverAddr = await this.getResolverAddr()
+        if (parseInt(resolverAddr, 16) === 0) return emptyAddress
+        const Resolver = getResolverContract({
+            address: resolverAddr,
+            provider: this.provider,
+        })
+        return getAddrWithResolver({
+            name: this.name,
+            key: "CFX",
+            resolverAddr,
+            provider: this.provider,
+        })
+    }
+
     async getAddress(coinId) {
         const resolverAddr = await this.getResolverAddr()
         if (parseInt(resolverAddr, 16) === 0) return emptyAddress
@@ -252,8 +271,6 @@ class Name {
         if (!coinId) {
             return Resolver['addr(bytes32)'](this.namehash)
         }
-        //TODO add coinID
-
         return getAddrWithResolver({
             name: this.name,
             key: coinId,
@@ -291,7 +308,6 @@ class Name {
 
     async setContenthash(content) {
         const resolverAddr = await this.getResolverAddr()
-        console.log(content)
         return setContenthashWithResolver({
             name: this.name,
             content,

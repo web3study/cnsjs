@@ -51,6 +51,7 @@
     "content-hash": "^2.5.2",
     "eth-ens-namehash": "^2.0.8",
     "ethers": "^5.0.13",
-    "js-sha3": "^0.8.0"
+    "js-sha3": "^0.8.0",
+    "js-conflux-sdk": "^2.0.6"
   }
 }
