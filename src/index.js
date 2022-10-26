@@ -42,7 +42,10 @@ async function getAddrWithResolver({name, key, resolverAddr, provider}) {
             provider,
         })
         if (key === "CFX") {
-            const addr = await Resolver['addr(bytes32,uint256)'](nh, 1029)
+            let addr = await Resolver['addr(bytes32,uint256)'](nh, 1029)
+            if (addr === '0x'){
+                addr = "0x0000000000000000000000000000000000000000";
+            }
             return format.address(addr, 1029)
         } else {
             const {coinType, encoder} = formatsByName[key]

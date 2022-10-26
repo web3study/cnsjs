@@ -24,7 +24,7 @@ describe('Blockchain tests', () => {
             let networkId = 1030
             const cns = new CNS({networkId, provider, ensAddress: getCnsAddress(networkId)})
             let address = await cns.name('honey.cfx').getAddress()
-            let cfxAddress = await cns.name('honey.cfx').getCfxAddress()
+            let cfxAddress = await cns.name('conflux.cfx').getCfxAddress()
             console.log(address)
             console.log(cfxAddress)
         })
