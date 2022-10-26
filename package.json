@@ -1,6 +1,6 @@
 {
   "name": "cnsjs-space",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "cns.js v2",
   "main": "dist/index.js",
   "files": [

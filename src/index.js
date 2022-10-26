@@ -18,6 +18,7 @@ function getCnsAddress(networkId) {
     } else if (parseInt(networkId) === 71) {
         return '0xD0eda7416C106C83E16f774aEeC225cD9f662F7F'
     } else if (parseInt(networkId) === 1030) {
+        console.log(networkId)
         return '0xec3133E740FcAc8AC7212078522E3Ee3FFde0903'
     }
 }
